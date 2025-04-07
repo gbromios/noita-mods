@@ -1,0 +1,7 @@
+<Mod
+  name="HP Regeneration"
+  description="Regenerate health automatically every few seconds. Lots of configuration options. Uses about a dozen custom tags because I am lazy."
+  tags="cheats,gameplay,quality of life"
+  dont_upload_folders=""
+  dont_upload_files=""
+/>

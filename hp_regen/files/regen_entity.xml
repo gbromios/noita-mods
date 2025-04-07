@@ -1,0 +1,63 @@
+<Entity name="hp_regen">
+  <VariableStorageComponent
+    name="heal_enable"
+    _tags="heal_enable"
+    value_bool="false"
+  />
+  <VariableStorageComponent
+    name="heal_flat"
+    _tags="heal_flat"
+    value_float="0"
+  />
+  <VariableStorageComponent
+    name="heal_percent"
+    _tags="heal_percent"
+    value_float="0"
+  />
+  <VariableStorageComponent
+    name="crit_enable"
+    _tags="crit_enable"
+    value_bool="false"
+  />
+  <VariableStorageComponent
+    name="crit_threshold"
+    _tags="crit_threshold"
+    value_float="0"
+  />
+  <VariableStorageComponent
+    name="crit_mod"
+    _tags="crit_mod"
+    value_float="1"
+  />
+  <VariableStorageComponent
+    name="crit_flat"
+    _tags="crit_flat"
+    value_float="0"
+  />
+  <VariableStorageComponent
+    name="crit_percent"
+    _tags="crit_percent"
+    value_float="0"
+  />
+
+  <!-- amount of seconds to pass before its ok to heal again -->
+  <VariableStorageComponent
+    name="damage_cd"
+    _tags="damage_cd"
+    value_int="0"
+  />
+
+  <VariableStorageComponent
+    name="damage_ok"
+    _tags="damage_ok"
+    value_int="0"
+  />
+
+	<LuaComponent
+    _tags="hp_regen_script"
+		script_source_file="mods/hp_regen/files/regen_tick.lua"
+		execute_every_n_frame="-1"
+	/>
+
+  <!--<VariableStorageComponent _tags="slot_count" name="slot_count" value_int="1" />-->
+</Entity>

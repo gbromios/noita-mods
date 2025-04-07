@@ -1,25 +1,11 @@
+dofile_once('mods/hp_regen/files/storage.lua')
 --print('HEAL ME????')
 local regen = GetUpdatedEntityID()
 local player = EntityGetParent(regen)
-local getV = function (tag, attr)
-  local comp = EntityGetFirstComponentIncludingDisabled(
-    regen,
-    'VariableStorageComponent',
-    tag
-  )
-  if comp then
-    return ComponentGetValue2(comp, attr)
-  else
-    print('FAILED TO GET COMPONENT "'.. tag ..'"')
-    return nil
-  end
 
-end
+local v = load_hp_regen_values(regen)
 
-local heal_enable = getV('heal_enable', 'value_bool')
-local crit_enable = getV('crit_enable', 'value_bool')
-
-if not (heal_enable or crit_enable) then
+if not (v.enable_heal or v.enable_crit) then
   -- we should have caught this condition and stopped the script!
   print('uhh... no healing is enabled?')
   goto DONE
@@ -41,28 +27,20 @@ if hp >= max_hp then
 end
 
 local f = GameGetFrameNum()
-local cd = getV('damage_ok', 'value_int')
 
 -- cooldown in effect
-if not cd or f < cd then
-  print('damage cooldown in effect, frames = ', tostring((cd or 0) - f))
+if v.damage_ok and f < v.damage_ok then
+  print('damage cooldown in effect, frames = ', tostring((v.damage_ok or 0) - f))
   goto DONE
 end
 
-local heal_flat = getV('heal_flat', 'value_float')
-local heal_pct = getV('heal_percent', 'value_float')
-local crit_mod = getV('crit_mod', 'value_float')
-local crit_threshold = getV('crit_threshold', 'value_float')
-local crit_flat = getV('crit_flat', 'value_float')
-local crit_pct = getV('crit_percent', 'value_float')
+local heal = v.heal_flat + (v.heal_percent * max_hp)
 
-local heal = heal_flat + (heal_pct * max_hp)
-
-if not (crit_enable and hp/max_hp < crit_threshold) then goto HEAL end
+if not (v.enable_crit and hp/max_hp < v.crit_threshold) then goto HEAL end
 -- apply critical additions
-print(' - DO CRIT!')
-if crit_mod > 0 then heal = heal * crit_mod end
-heal = heal + crit_flat + (crit_pct * max_hp)
+--print(' - DO CRIT!')
+if v.crit_mod > 0 then heal = heal * v.crit_mod end
+heal = heal + v.crit_flat + (v.crit_percent * max_hp)
 
 ::HEAL::
 
@@ -95,14 +73,14 @@ GameCreateCosmeticParticle(
 )
 
 print(' - VALUES USED:')
-print('   - heal_flat:      ' .. tostring(heal_flat))
-print('   - heal_pct :      ' .. tostring(heal_pct))
-print('   - heal_pct * hp:  ' .. tostring(heal_pct * max_hp))
-print('   - crit_threshold: ' .. tostring(crit_threshold))
-print('   - crit_mod:       ' .. tostring(crit_mod))
-print('   - crit_flat:      ' .. tostring(crit_flat))
-print('   - crit_pct:       ' .. tostring(crit_pct))
-print('   - crit_pct * hp   ' .. tostring(crit_pct * max_hp))
+print('   - heal_flat:      ' .. tostring(v.heal_flat))
+print('   - heal_pct :      ' .. tostring(v.heal_percent))
+print('   - heal_pct * hp:  ' .. tostring(v.heal_percent * max_hp))
+print('   - crit_threshold: ' .. tostring(v.crit_threshold))
+print('   - crit_mod:       ' .. tostring(v.crit_mod))
+print('   - crit_flat:      ' .. tostring(v.crit_flat))
+print('   - crit_pct:       ' .. tostring(v.crit_percent))
+print('   - crit_pct * hp   ' .. tostring(v.crit_percent * max_hp))
 print('   - hp:             ' .. tostring(hp))
 print('   - max_hp:         ' .. tostring(max_hp))
 print('   - heal:           ' .. tostring(heal))

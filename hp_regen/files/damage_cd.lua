@@ -1,30 +1,16 @@
+dofile_once('mods/hp_regen/files/storage.lua')
 -- i reset the damange cooldown hehehe
 function damage_received(damage, desc, entity_who_caused, is_fatal)
   ---print('HIS OUCHIE HAS OCCURED')
   local player = GetUpdatedEntityID()
+  local regen = get_regen_entity(player)
+  if not regen then return end
 
-	local children = EntityGetAllChildren(player, 'hp_regen_e')
-  if not children or (#children < 1) then
-    -- no regen, fuck it
-    return
-  end
-
-  local regen = children[1]
-  local varCD = EntityGetFirstComponent(
-    regen,
-    "VariableStorageComponent",
-    "damage_cd"
-  )
-  local m = ComponentGetValue2(varCD, "value_int") or 0
+  local m = load_hp_regen_damage_cd(regen)
 
   if m == 0 then return end -- not my problem tbh
   -- this is when u can start healing again... ok
-  local f_ok = GameGetFrameNum() + (m * 60)
+  local f_ok = GameGetFrameNum() + m
   ---print('.....CAN HEAL AFTER FRAME: ', f_ok)
-  local varOK = EntityGetFirstComponent(
-    regen,
-    "VariableStorageComponent",
-    "damage_ok"
-  )
-  ComponentSetValue2(varOK, "value_int", f_ok)
+  save_hp_regen_damage_ok (regen, f_ok)
 end

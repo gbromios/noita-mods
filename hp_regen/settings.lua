@@ -1,10 +1,10 @@
-dofile("data/scripts/lib/mod_settings.lua") -- see this file for documentation on some of the features.
+dofile('data/scripts/lib/mod_settings.lua') -- see this file for documentation on some of the features.
 
 -- MOD_SETTING_SCOPE_RUNTIME -- we awant
 
 -- MOD_SETTING_SCOPE_RUNTIME_RESTART
 
-local mod_id = "hp_regen"
+local mod_id = 'hp_regen'
 mod_settings_version = 1
 
 function sid (id) return mod_id .. '.' .. id end
@@ -24,7 +24,7 @@ end
 
 function mod_setting_text (setting)
   local text = setting.ui_name .. ': ' .. setting.ui_description
-  local _, lines = string.gsub(text, "\n", "")
+  local _, lines = string.gsub(text, '\n', '')
   local x = mod_setting_group_x_offset + 1.5 -- we groupin
   local y = (lines + 1) * 2
   --print('text?', text, x, y)
@@ -32,9 +32,9 @@ function mod_setting_text (setting)
 end
 
 function mod_setting_percent_hp (mod_id, gui, in_main_menu, im_id, setting)
-  if not setting.show_if() then return end
+  if setting.show_if and not setting.show_if() then return end
 	local value = ModSettingGetNextValue( mod_setting_get_id(mod_id,setting) )
-	if type(value) ~= "number" then value = setting.value_default or 0.0 end
+	if type(value) ~= 'number' then value = setting.value_default or 0.0 end
   local text, x, y = mod_setting_text(setting)
   GuiText(gui, x, 0, text)
 	local value_new = GuiSlider(
@@ -60,9 +60,9 @@ function mod_setting_percent_hp (mod_id, gui, in_main_menu, im_id, setting)
 end
 
 function mod_setting_flat_hp (mod_id, gui, in_main_menu, im_id, setting)
-  if not setting.show_if() then return end
+  if setting.show_if and not setting.show_if() then return end
 	local value = ModSettingGetNextValue( mod_setting_get_id(mod_id,setting) )
-	if type(value) ~= "number" then value = setting.value_default or 0.0 end
+	if type(value) ~= 'number' then value = setting.value_default or 0.0 end
 
   local text, x, y = mod_setting_text(setting)
   GuiText(gui, x, 0, text)
@@ -74,12 +74,14 @@ function mod_setting_flat_hp (mod_id, gui, in_main_menu, im_id, setting)
     '', -- setting.ui_name,
     value,
     0, -- min
-    2500,
+    4, -- max (100hp)
     setting.value_default,
-    0.04, -- multiplier
-    '  $0 HP', -- "$0 HP", -- format
+    25, -- display multiplier
+    '  $0 HP', -- '$0 HP', -- format
     200 -- width
   )
+
+  print('SLIDER SEZ:', value_new)
 
 	if value ~= value_new then
 		ModSettingSetNextValue(sid(setting.id), value_new, false)
@@ -90,9 +92,9 @@ function mod_setting_flat_hp (mod_id, gui, in_main_menu, im_id, setting)
 end
 
 function mod_setting_mult_hp (mod_id, gui, in_main_menu, im_id, setting)
-  if not setting.show_if() then return end
+  if setting.show_if and not setting.show_if() then return end
 	local value = ModSettingGetNextValue( mod_setting_get_id(mod_id,setting) )
-	if type(value) ~= "number" then value = setting.value_default or 0.0 end
+	if type(value) ~= 'number' then value = setting.value_default or 0.0 end
 
   local text, x, y = mod_setting_text(setting)
   GuiText(gui, x, 0, text)
@@ -107,8 +109,8 @@ function mod_setting_mult_hp (mod_id, gui, in_main_menu, im_id, setting)
     10, -- max?
     setting.value_default,
     1, -- multiplier
-    --"  (normal regen) × $0", -- format
-    "  (normal regen) X $0", -- format
+    --'  (normal regen) × $0', -- format
+    '  (normal regen) X $0', -- format
     200 -- width
   )
 
@@ -121,9 +123,9 @@ function mod_setting_mult_hp (mod_id, gui, in_main_menu, im_id, setting)
 end
 
 function mod_setting_seconds (mod_id, gui, in_main_menu, im_id, setting)
-  if not setting.show_if() then return end
+  if setting.show_if and not setting.show_if() then return end
 	local value = ModSettingGetNextValue( mod_setting_get_id(mod_id,setting) )
-	if type(value) ~= "number" then value = setting.value_default or 0.0 end
+	if type(value) ~= 'number' then value = setting.value_default or 0.0 end
 
   local text, x, y = mod_setting_text(setting)
   GuiText(gui, x, 0, text)
@@ -138,7 +140,7 @@ function mod_setting_seconds (mod_id, gui, in_main_menu, im_id, setting)
     setting.value_max,
     setting.value_default,
     1, -- multiplier
-    '', -- "$0 Seconds", -- format
+    '', -- '$0 Seconds', -- format
     200 -- width
   )
 
@@ -159,10 +161,8 @@ mod_settings = {
     ui_description = 'time between heals',
     value_default = 5,
     change_fn = change_fn,
-    show_if = function () return true end,
     ui_fn = mod_setting_seconds,
     scope = MOD_SETTING_SCOPE_RUNTIME_RESTART,
-    --value_display_multiplier = 0.04,
     value_min = 1,
     value_max = 60,
   },
@@ -170,14 +170,11 @@ mod_settings = {
   {
     id = 'enable_heal',
     ui_name = 'Enable Regular Healing',
-    ui_description = 'whether to activate periodic regeneration.\nIf multiple quantities are set at the same time, they will be added together.\n(e.g.: 10 flat and 10 % will heal "max * 0.1 + 10" hp',
+    ui_description = 'whether to activate periodic regeneration.\nIf multiple quantities are set at the same time, they will be added together.\n(e.g.: 10 flat and 10 % will heal 'max * 0.1 + 10' hp',
     value_default = true,
     change_fn = change_fn,
     ui_fn = mod_setting_bool,
     scope = MOD_SETTING_SCOPE_RUNTIME,
-    --value_display_multiplier = 0.04,
-    --value_display_formatting = "  $0 HP",
-    --value_min = 25,
     value_max = 5000,
   },
   {
@@ -189,10 +186,6 @@ mod_settings = {
     ui_fn = mod_setting_percent_hp,
     scope = MOD_SETTING_SCOPE_RUNTIME,
     show_if = show_heal,
-    --value_display_multiplier = 0.04,
-    --value_display_formatting = "  $0 HP",
-    --value_min = 25,
-    --value_max = 5000,
   },
 
   {
@@ -204,10 +197,6 @@ mod_settings = {
     ui_fn = mod_setting_flat_hp,
     scope = MOD_SETTING_SCOPE_RUNTIME,
     show_if = show_heal,
-    --value_display_multiplier = 0.04,
-    --value_display_formatting = "  $0 HP",
-    --value_min = 25,
-    --value_max = 5000,
   },
 
   {
@@ -222,7 +211,7 @@ mod_settings = {
     --end,
     scope = MOD_SETTING_SCOPE_RUNTIME,
     --value_display_multiplier = 0.04,
-    --value_display_formatting = "  $0 HP",
+    --value_display_formatting = '  $0 HP',
     --value_min = 25,
     --value_max = 5000,
   },
@@ -230,16 +219,12 @@ mod_settings = {
   {
     id = 'crit_threshold',
     ui_name = 'Low-Health Threshold',
-    ui_description = '% of health remeaining that constitutes "Low Health"',
+    ui_description = '% of health remeaining that constitutes 'Low Health'',
     value_default = 0.2,
     change_fn = change_fn,
     ui_fn = mod_setting_percent_hp,
     show_if = show_crit,
     scope = MOD_SETTING_SCOPE_RUNTIME,
-    --value_display_multiplier = 0.04,
-    --value_display_formatting = "  $0 HP",
-    --value_min = 25,
-    --value_max = 5000,
   },
 
   {
@@ -251,10 +236,6 @@ mod_settings = {
     ui_fn = mod_setting_flat_hp,
     show_if = show_crit,
     scope = MOD_SETTING_SCOPE_RUNTIME,
-    --value_display_multiplier = 0.04,
-    --value_display_formatting = "  $0 HP",
-    --value_min = 25,
-    --value_max = 5000,
   },
 
   {
@@ -266,10 +247,6 @@ mod_settings = {
     ui_fn = mod_setting_percent_hp,
     show_if = show_crit,
     scope = MOD_SETTING_SCOPE_RUNTIME,
-    --value_display_multiplier = 0.04,
-    --value_display_formatting = "  $0 HP",
-    --value_min = 25,
-    --value_max = 5000,
   },
 
   {
@@ -281,10 +258,6 @@ mod_settings = {
     ui_fn = mod_setting_mult_hp,
     show_if = show_crit_mod,
     scope = MOD_SETTING_SCOPE_RUNTIME,
-    --value_display_multiplier = 0.04,
-    --value_display_formatting = "  $0 HP",
-    --value_min = 25,
-    --value_max = 5000,
   },
 
   {
@@ -299,7 +272,7 @@ mod_settings = {
     --end,
     scope = MOD_SETTING_SCOPE_RUNTIME,
     --value_display_multiplier = 0.04,
-    --value_display_formatting = "  $0 HP",
+    --value_display_formatting = '  $0 HP',
     --value_min = 25,
     --value_max = 5000,
   },
@@ -316,9 +289,6 @@ mod_settings = {
     value_min = 1,
     value_max = 180,
   },
-
-  
-
 }
 
 
@@ -337,11 +307,11 @@ end
 
 
 function ModSettingsUpdate(init_scope)
-  ---print("CALLED: ModSettingsUpdate(".. tostring(init_scope) ..")")
+  ---print('CALLED: ModSettingsUpdate('.. tostring(init_scope) ..')')
 	--local old_version = mod_settings_get_version( mod_id ) -- This can be used to migrate some settings between mod versions.
 	mod_settings_update( mod_id, mod_settings, init_scope )
   if init_scope == MOD_SETTING_SCOPE_RUNTIME then
-    ---print("WE GO HAMB")
+    ---print('WE GO HAMB')
     --apply_settings()
   end
 end

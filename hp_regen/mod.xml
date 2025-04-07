@@ -1,6 +1,6 @@
 <Mod
 	name="HP Regeneration"
-	description="Regenerate health automatically every few seconds. Lots of configuration options. Uses about a dozen custom tags because I am lazy."
+	description="Regenerate health automatically every few seconds. Lots of configuration options."
 	request_no_api_restrictions="0" 
 > 
 </Mod>

@@ -1,63 +1,27 @@
 <Entity name="hp_regen">
-  <VariableStorageComponent
-    name="heal_enable"
-    _tags="heal_enable"
-    value_bool="false"
-  />
-  <VariableStorageComponent
-    name="heal_flat"
-    _tags="heal_flat"
-    value_float="0"
-  />
-  <VariableStorageComponent
-    name="heal_percent"
-    _tags="heal_percent"
-    value_float="0"
-  />
-  <VariableStorageComponent
-    name="crit_enable"
-    _tags="crit_enable"
-    value_bool="false"
-  />
-  <VariableStorageComponent
-    name="crit_threshold"
-    _tags="crit_threshold"
-    value_float="0"
-  />
-  <VariableStorageComponent
-    name="crit_mod"
-    _tags="crit_mod"
-    value_float="1"
-  />
-  <VariableStorageComponent
-    name="crit_flat"
-    _tags="crit_flat"
-    value_float="0"
-  />
-  <VariableStorageComponent
-    name="crit_percent"
-    _tags="crit_percent"
-    value_float="0"
-  />
-
-  <!-- amount of seconds to pass before its ok to heal again -->
-  <VariableStorageComponent
-    name="damage_cd"
-    _tags="damage_cd"
-    value_int="0"
-  />
-
-  <VariableStorageComponent
-    name="damage_ok"
-    _tags="damage_ok"
-    value_int="0"
-  />
-
+  <!-- amount of frames to wait before its ok to heal again (at the top because its accessed the most i think) -->
+  <VariableStorageComponent name="damage_cd" value_int="0" />
+  <!-- frame when its ok to do healing again (frame when last damaged) + (damage_cd) -->
+  <VariableStorageComponent name="damage_ok" value_int="0" />
+  <!-- enables periodic heals -->
+  <VariableStorageComponent name="enable_heal" value_bool="false" />
+  <!-- flat hp healed per tick -->
+  <VariableStorageComponent name="heal_flat" value_float="0" />
+  <!-- %max_hp healed per tick -->
+  <VariableStorageComponent name="heal_percent" value_float="0" />
+  <!-- enables extra low-hp healing -->
+  <VariableStorageComponent name="enable_crit" value_bool="false" />
+  <!-- low-hp state is when hp <= max_hp * crit_threshold -->
+  <VariableStorageComponent name="crit_threshold" value_float="0" />
+  <!-- critical heals just scale the base healing value -->
+  <VariableStorageComponent name="crit_mod" value_float="1" />
+  <!-- flat hp healed per tick when hp is low -->
+  <VariableStorageComponent name="crit_flat" value_float="0" />
+  <!-- %max_hp healed per tick when hp is low -->
+  <VariableStorageComponent name="crit_percent" value_float="0" />
+  <!-- the script where we make use of all this lovely data~ -->
 	<LuaComponent
-    _tags="hp_regen_script"
 		script_source_file="mods/hp_regen/files/regen_tick.lua"
 		execute_every_n_frame="-1"
 	/>
-
-  <!--<VariableStorageComponent _tags="slot_count" name="slot_count" value_int="1" />-->
 </Entity>

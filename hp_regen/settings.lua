@@ -164,19 +164,20 @@ mod_settings = {
     ui_fn = mod_setting_seconds,
     scope = MOD_SETTING_SCOPE_RUNTIME_RESTART,
     value_min = 1,
-    value_max = 60,
+    value_max = 60
   },
 
   {
     id = 'enable_heal',
     ui_name = 'Enable Regular Healing',
-    ui_description = 'whether to activate periodic regeneration.\nIf multiple quantities are set at the same time, they will be added together.\n(e.g.: 10 flat and 10 % will heal 'max * 0.1 + 10' hp',
+    ui_description = 'whether to activate periodic regeneration.\nIf multiple quantities are set at the same time, they will be added together.\n(e.g.: 10 flat and 10 % will heal "max * 0.1 + 10" hp',
     value_default = true,
     change_fn = change_fn,
     ui_fn = mod_setting_bool,
     scope = MOD_SETTING_SCOPE_RUNTIME,
-    value_max = 5000,
+    value_max = 5000
   },
+
   {
     id = 'heal_percent',
     ui_name = 'Percent-Based Healing',
@@ -185,7 +186,7 @@ mod_settings = {
     change_fn = change_fn,
     ui_fn = mod_setting_percent_hp,
     scope = MOD_SETTING_SCOPE_RUNTIME,
-    show_if = show_heal,
+    show_if = show_heal
   },
 
   {
@@ -196,7 +197,7 @@ mod_settings = {
     change_fn = change_fn,
     ui_fn = mod_setting_flat_hp,
     scope = MOD_SETTING_SCOPE_RUNTIME,
-    show_if = show_heal,
+    show_if = show_heal
   },
 
   {
@@ -213,18 +214,18 @@ mod_settings = {
     --value_display_multiplier = 0.04,
     --value_display_formatting = '  $0 HP',
     --value_min = 25,
-    --value_max = 5000,
+    --value_max = 5000
   },
 
   {
     id = 'crit_threshold',
     ui_name = 'Low-Health Threshold',
-    ui_description = '% of health remeaining that constitutes 'Low Health'',
+    ui_description = '% of health remeaining that constitutes "Low Health"',
     value_default = 0.2,
     change_fn = change_fn,
     ui_fn = mod_setting_percent_hp,
     show_if = show_crit,
-    scope = MOD_SETTING_SCOPE_RUNTIME,
+    scope = MOD_SETTING_SCOPE_RUNTIME
   },
 
   {
@@ -235,7 +236,7 @@ mod_settings = {
     change_fn = change_fn,
     ui_fn = mod_setting_flat_hp,
     show_if = show_crit,
-    scope = MOD_SETTING_SCOPE_RUNTIME,
+    scope = MOD_SETTING_SCOPE_RUNTIME
   },
 
   {
@@ -246,7 +247,7 @@ mod_settings = {
     change_fn = change_fn,
     ui_fn = mod_setting_percent_hp,
     show_if = show_crit,
-    scope = MOD_SETTING_SCOPE_RUNTIME,
+    scope = MOD_SETTING_SCOPE_RUNTIME
   },
 
   {
@@ -257,7 +258,7 @@ mod_settings = {
     change_fn = change_fn,
     ui_fn = mod_setting_mult_hp,
     show_if = show_crit_mod,
-    scope = MOD_SETTING_SCOPE_RUNTIME,
+    scope = MOD_SETTING_SCOPE_RUNTIME
   },
 
   {
@@ -270,11 +271,7 @@ mod_settings = {
     --ui_fn = function (mod_id, gui, in_main_menu, im_id, setting)
       --pp(({mod_id, gui, in_main_menu, im_id, setting}))
     --end,
-    scope = MOD_SETTING_SCOPE_RUNTIME,
-    --value_display_multiplier = 0.04,
-    --value_display_formatting = '  $0 HP',
-    --value_min = 25,
-    --value_max = 5000,
+    scope = MOD_SETTING_SCOPE_RUNTIME
   },
 
   {
@@ -287,8 +284,8 @@ mod_settings = {
     ui_fn = mod_setting_seconds,
     scope = MOD_SETTING_SCOPE_RUNTIME,
     value_min = 1,
-    value_max = 180,
-  },
+    value_max = 180
+  }
 }
 
 

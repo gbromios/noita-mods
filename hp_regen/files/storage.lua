@@ -67,7 +67,7 @@ function save_hp_regen_values (values, regen, script)
       local name = ComponentGetValue2(comp, 'name')
       local attr = HP_REGEN_STORAGE_TYPES[name]
       if attr then
-        print(string.format('SAVE %s '%s' TO %s', name, tostring(values[name]), attr))
+        print(string.format('SAVE %s "%s" TO %s', name, tostring(values[name]), attr))
         ComponentSetValue2(comp, attr, values[name])
       end
     end

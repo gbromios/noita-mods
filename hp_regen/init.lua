@@ -73,8 +73,8 @@ function apply_regen_settings (player)
   save_hp_regen_values(values, regen, script)
 
   -- (needs gb_util)
-  print('VALUES HAVE BEEN SET, THANK YOU!!!!!')
-  print(str(values, true, 2, true))
+  --print('VALUES HAVE BEEN SET, THANK YOU!!!!!')
+  --print(str(values, true, 2, true))
   --] ]--
 
 end

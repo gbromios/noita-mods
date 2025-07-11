@@ -1,0 +1,19 @@
+<Entity tags="backpack">
+	<!-- Not Using This Yet (or maybe ever?)
+	<Inventory2Component
+		quick_inventory_slots="10"
+		full_inventory_slots_x="16"
+		full_inventory_slots_y="2" // DOUBLED!!!
+	/>
+	-->
+
+	<VariableStorageComponent _tags="current_slot" name="current_slot" value_int="1" />
+	<VariableStorageComponent _tags="slot_count" name="slot_count" value_int="1" />
+	<Entity name="1" />
+  <!-- need to manually add these bad boys
+	<Entity name="2" />
+	<Entity name="3" />
+	<Entity name="4" />
+  -->
+</Entity>
+

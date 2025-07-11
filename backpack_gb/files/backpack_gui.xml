@@ -1,0 +1,6 @@
+<Entity>
+	<LuaComponent
+		script_source_file="mods/backpack_gb/files/gui.lua"
+		execute_on_added="1"
+	/>
+</Entity>
